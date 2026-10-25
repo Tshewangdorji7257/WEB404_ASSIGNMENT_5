@@ -65,7 +65,7 @@ The server creates a secret random value for each session and places it inside i
 | Operating system | Windows 11 |
 | Language | Python |
 | Framework | Flask |
-| Browser |
+| Browser | Chrome |
 | Bank application | http://localhost:5000 |
 | Attacker website | http://localhost:5001 |
 | Test accounts | alice / password123 (balance $5,000), bob / bobpass (balance $1,000) |
