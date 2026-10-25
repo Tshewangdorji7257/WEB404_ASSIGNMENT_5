@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Vulnerable' if mode == 'vulnerable' else 'Protected' }} transfer · Harbor{% endblock %}
+{% block bodyclass %}{{ mode }}{% endblock %}
+{% block body %}
+<header class="top">
+  <strong class="brand">Harbor Credit Union</strong>
+  <nav>
+    <a href="{{ url_for('vulnerable') }}" class="{{ 'on' if mode == 'vulnerable' }}">Vulnerable version</a>
+    <a href="{{ url_for('secure') }}" class="{{ 'on' if mode == 'secure' }}">Protected version</a>
+    <a href="{{ url_for('reset') }}">Reset demo</a>
+    <a href="{{ url_for('logout') }}">Sign out ({{ me }})</a>
+  </nav>
+</header>
+
+<div class="banner">
+  {% if mode == 'vulnerable' %}
+    <b>No CSRF protection.</b> Any website can make your browser send this form.
+  {% else %}
+    <b>CSRF protection on.</b> Every transfer must carry a secret token tied to your session.
+  {% endif %}
+</div>
+
+<main class="grid">
+  <section class="card balance">
+    <p class="muted">Balance for {{ me }}</p>
+    <p class="amount">${{ '{:,}'.format(balance) }}</p>
+  </section>
+
+  <section class="card">
+    <h2>Send money</h2>
+    {% with msgs = get_flashed_messages(with_categories=true) %}
+      {% for cat, m in msgs %}<p class="flash {{ cat }}">{{ m }}</p>{% endfor %}
+    {% endwith %}
+    <form method="post" action="{{ url_for(mode + '_transfer') }}">
+      {% if mode == 'secure' %}
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      {% endif %}
+      <label>Send to
+        <select name="to">{% for u in others %}<option value="{{ u }}">{{ u }}</option>{% endfor %}</select>
+      </label>
+      <label>Amount (USD) <input name="amount" type="number" min="1" value="100" required></label>
+      <button class="btn">Send money</button>
+    </form>
+  </section>
+
+  <section class="card wide">
+    <h2>Recent transfers</h2>
+    <ul class="log">
+      {% for m, s, r, a in log %}
+      <li><span>{{ s }} to {{ r }}</span><b>${{ '{:,}'.format(a) }}</b></li>
+      {% else %}<li class="muted">Nothing yet. Send money to see it here.</li>{% endfor %}
+    </ul>
+  </section>
+</main>
+{% endblock %}

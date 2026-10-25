@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Sign in · Harbor Credit Union{% endblock %}
+{% block bodyclass %}center{% endblock %}
+{% block body %}
+<main class="login card">
+  <h1>Harbor Credit Union</h1>
+  <p class="muted">CSRF practice lab. Sign in with the demo account.</p>
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, m in msgs %}<p class="flash {{ cat }}">{{ m }}</p>{% endfor %}
+  {% endwith %}
+  <form method="post">
+    <label>Username <input name="username" value="alice" autocomplete="username" required></label>
+    <label>Password <input name="password" type="password" value="password123" autocomplete="current-password" required></label>
+    <button class="btn">Sign in</button>
+  </form>
+  <p class="hint">Demo logins: alice / password123 and bob / bobpass</p>
+</main>
+{% endblock %}

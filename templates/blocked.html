@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Request blocked{% endblock %}
+{% block bodyclass %}center secure{% endblock %}
+{% block body %}
+<main class="login card">
+  <h1>Request blocked</h1>
+  <p>The security token was missing or did not match your session, so the transfer did not happen. This is the CSRF defense working.</p>
+  <a class="btn" href="{{ url_for('secure') }}">Back to your account</a>
+</main>
+{% endblock %}
